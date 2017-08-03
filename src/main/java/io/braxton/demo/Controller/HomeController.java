@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
@@ -25,8 +27,20 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping("/about")
-    public String about() {
-        return "about";
+    @RequestMapping("/createPlaylist")
+    public String createPlaylist() {
+        return "createPlaylist";
+    }
+
+    @RequestMapping(value = "/createPlaylist", method = RequestMethod.POST)
+    public String createPlaylist(@RequestParam("title") String title,
+                                 @RequestParam("owner") String owner,
+                                 @RequestParam("order") int order){
+        Playlist playlist = new Playlist();
+        playlist.setTitle(title);
+        playlist.setOwner(owner);
+        playlist.setOrder(order);
+        playlistRepo.save(playlist);
+        return "redirect:/";
     }
 }
